@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<robot name="myfirstrobot" xmlns:xacro="https://www.ros.org/wiki/xacro">
+
+	<material name="blue">
+		<color rgba="0 0 0.8 1"/>
+	</material>
+
+  <link name="frame_link">
+    <visual>
+      <geometry>
+        <mesh filename="package://scooter/description/meshes/new_frame_edited.stl" scale="0.01 0.01 0.01"/>
+      </geometry>
+      <material name="blue"/>
+      <origin xyz="-0.72 0.0 0.0" rpy="${pi/2} 0.0 ${pi}"/>
+    </visual>
+  </link>
+
+
+
+</robot>
