@@ -187,12 +187,8 @@
         </joint>
 
     <!-- depth camera -->
-    <xacro:arg name="use_nominal_extrinsics" default="false"/>
-    <xacro:arg name="add_plug" default="false" />
-    <xacro:arg name="use_mesh" default="true" />
-    <xacro:include filename="$(find realsense2_description)/urdf/_d435.urdf.xacro" />
-
-    <xacro:sensor_d435 parent="steering_link" use_nominal_extrinsics="$(arg use_nominal_extrinsics)" add_plug="1" use_mesh="$(arg use_mesh)">
+    <xacro:include filename="$(find autonomous-scooter)/description/urdf/realsense_urdf/_d435.urdf.xacro" />
+    <xacro:sensor_d435 parent="steering_link" use_nominal_extrinsics="false" add_plug="false" use_mesh="true">
         <origin xyz="0.03 0 0.1" rpy="0 0 0"/>
     </xacro:sensor_d435>    
     <!-- <gazebo reference="scooter"/> -->
