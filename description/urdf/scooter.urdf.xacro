@@ -2,27 +2,13 @@
 
 <robot name="scooter" xmlns:xacro="https://www.ros.org/wiki/xacro">
 
-    <material name='black'>
-        <color rgba="0 0 0 0.8"/>
-    </material>
-    <material name='gray'>
-        <color rgba="0.4 0.4 0.4 0.7"/>
-    </material>
-    <material name='blue'>
-        <color rgba="0 0 0.8 0.7"/>
-    </material>
+    <xacro:include filename="$(find autonomous-scooter)/description/urdf/properties.xacro"/>
 
-    <xacro:property name="rad_front_wheel" value="${0.216/2}" />
-    <xacro:property name="thick_wheel" value="0.044" />
-    <xacro:property name="thick_steering" value="0.02" />
 
     <!-- base_link -->    
     <link name="base_link"/>
 
     <!-- steering_link -->
-    <xacro:property name="alpha" value="${80 * pi / 180}" />
-    <xacro:property name="steering_length" value="${0.2}" />
-
 
     <link name="steering_link">
         <visual>
@@ -39,6 +25,9 @@
             </geometry>
             <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>           
         </collision>
+
+        <mass value="${mass_steering_link}"/>
+        <inertia ixx="${steering_ixx}" ixy="${steering_ixy}" ixz="${steering_ixz}" iyy="${steering_iyy}" iyz="${steering_iyz}" izz="${steering_izz}"/>
     </link>
 
         <joint name="front_wheel_to_steering_joint" type="revolute">
@@ -66,6 +55,9 @@
             </geometry>
             <origin xyz="0.0 0.0 0.0" rpy="${pi/2} 0.0 0.0"/>           
         </collision>
+
+        <mass value="${mass_front_wheel}"/>
+        <inertia ixx="${front_ixx}" ixy="${front_ixy}" ixz="${front_ixz}" iyy="${front_iyy}" iyz="${front_iyz}" izz="${front_izz}"/>
     </link>
 
         <joint name="base_to_front_joint" type="continuous">
@@ -79,31 +71,35 @@
 
     <!-- frame_link -->
 
-    <xacro:property name="scale" value="${0.01}" />
-
     <link name="frame_link">
         <visual>
-        <geometry>
-            <mesh filename="package://autonomous-scooter/description/meshes/frame.stl" scale="${scale} ${scale} ${scale}"/>
-        </geometry>
-        <material name='black'/>
-        <origin xyz="0.0 0.0 0.0" rpy="${pi/2} ${2* pi/180} ${pi}"/>
+            <geometry>
+                <mesh filename="package://autonomous-scooter/description/meshes/frame.stl" scale="${scale} ${scale} ${scale}"/>
+            </geometry>
+            <material name='black'/>
+            <origin xyz="0.0 0.0 0.0" rpy="${pi/2} ${2* pi/180} ${pi}"/>
         </visual>
 
+        <collision>
+            <geometry>
+                <mesh filename="package://autonomous-scooter/description/meshes/frame.stl" scale="${scale} ${scale} ${scale}"/>
+            </geometry>
+            <origin xyz="0.0 0.0 0.0" rpy="${pi/2} ${2* pi/180} ${pi}"/>
+        </collision>
+
+        <mass value="0.0"/>
+        <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/>
     </link>
 
-    <joint name="base_to_frame_joint" type="fixed">
-        <parent link="base_link"/>
-        <child link="frame_link"/>
-        <origin xyz="-0.728 0.0 0.109" rpy="0.0 0.0 0.0"/>
-    </joint>
+        <joint name="base_to_frame_joint" type="fixed">
+            <parent link="base_link"/>
+            <child link="frame_link"/>
+            <origin xyz="-0.728 0.0 0.109" rpy="0.0 0.0 0.0"/>
+        </joint>
 
 
 
     <!-- back axis -->
-    <xacro:property name="length_back_axis" value="0.3" />
-    <xacro:property name="rad_back_wheel" value="${0.203/2}" />
-
     <link name="axis_link">
         <visual>
             <geometry>
@@ -119,6 +115,9 @@
             </geometry>
             <origin xyz="0.0 0.0 0.0" rpy="${pi/2} 0.0 0.0"/>
         </collision>
+
+        <mass value="0.0"/>
+        <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/>
     </link>
 
         <joint name="axis_joint" type="fixed">
@@ -130,7 +129,6 @@
 
 
     <!-- back wheel left -->
-
     <link name="back_wheel_left_link">
         <visual>
             <geometry>
@@ -146,6 +144,9 @@
             </geometry>
             <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
         </collision>
+
+        <mass value="${mass_back_wheel}"/>
+        <inertia ixx="${back_ixx}" ixy="${back_ixy}" ixz="${back_ixz}" iyy="${back_iyy}" iyz="${back_iyz}" izz="${back_izz}"/>
     </link>
 
         <joint name="base_to_back_left_joint" type="continuous">
@@ -154,6 +155,7 @@
             <origin xyz="0 ${length_back_axis/2} 0.0" rpy="${pi/2} 0.0 0.0"/>
             <axis xyz="0 0 1"/>
         </joint>
+
 
     <!-- back wheel right -->
     <link name="back_wheel_right_link">
@@ -172,6 +174,9 @@
             <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>            
         </collision>
 
+        <mass value="${mass_back_wheel}"/>
+        <inertia ixx="${back_ixx}" ixy="${back_ixy}" ixz="${back_ixz}" iyy="${back_iyy}" iyz="${back_iyz}" izz="${back_izz}"/>
+
     </link>
 
         <joint name="base_to_back_right_joint" type="continuous">
@@ -180,5 +185,16 @@
             <origin xyz="0.0 -${length_back_axis / 2} 0.0" rpy="${pi/2} 0.0 0.0"/>
             <axis xyz="0 0 1"/>
         </joint>
+
+    <!-- depth camera -->
+    <xacro:arg name="use_nominal_extrinsics" default="false"/>
+    <xacro:arg name="add_plug" default="false" />
+    <xacro:arg name="use_mesh" default="true" />
+    <xacro:include filename="$(find realsense2_description)/urdf/_d435.urdf.xacro" />
+
+    <xacro:sensor_d435 parent="steering_link" use_nominal_extrinsics="$(arg use_nominal_extrinsics)" add_plug="1" use_mesh="$(arg use_mesh)">
+        <origin xyz="0.03 0 0.1" rpy="0 0 0"/>
+    </xacro:sensor_d435>    
+    <!-- <gazebo reference="scooter"/> -->
 
 </robot>
