@@ -5,7 +5,11 @@
   <arg name="rvizconfig" default="$(find autonomous-scooter)/rviz/urdf.rviz" />
 
   <param name="robot_description" command="$(find xacro)/xacro $(arg model)" />
+<<<<<<< HEAD:launch/model.launch
   <param name="joint_state_publisher_gui" value="$(arg gui)"/> 
+=======
+  <param name="joint_state_publisher_gui" value="$(arg gui)"/>
+>>>>>>> 8d5fd8f9af9064e4b63414880bf9fe8819cdf5a6:launch/display.launch
   
   <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
