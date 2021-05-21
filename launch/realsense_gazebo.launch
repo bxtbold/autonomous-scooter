@@ -1,0 +1,23 @@
+<launch>
+   
+    <!-- arguments for model, gui, and rviz -->
+    <arg name="model" default="$(find autonomous-scooter)/description/urdf/realsense_urdf/test_d435_camera.urdf.xacro"/>
+    <!-- converts urdf to the robot description in the parameter server  -->
+    <param name="robot_description" command="$(find xacro)/xacro $(arg model) use_nominal_extrinsics:=true add_plug:=true use_mesh:=true" />
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
+        <param name="publish_frequency" type = "double" value="30.0"/>
+    </node>
+
+
+    <!-- launch gazebo -->
+    <include file="$(find autonomous-scooter)/launch/gazebo.launch">
+        <arg name="model" default="${arg model}"/>
+    </include>
+    
+
+    <!-- publish the joints and launch rviz -->
+    <param name="use_gui" value="true"/>         <!-- <param name="joint_state_publisher_gui" value="$(arg gui)"/> -->
+    <!-- <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" /> -->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find autonomous-scooter)/rviz/urdf.rviz" required="true" />
+
+</launch>
