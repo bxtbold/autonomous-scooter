@@ -12,7 +12,7 @@ Panels:
         - /TF1/Tree1
         - /PointCloud21
         - /Camera1
-      Splitter Ratio: 0.6360294222831726
+      Splitter Ratio: 0.5
     Tree Height: 360
   - Class: rviz/Selection
     Name: Selection
@@ -180,7 +180,7 @@ Visualization Manager:
       Channel Name: intensity
       Class: rviz/PointCloud2
       Color: 255; 255; 255
-      Color Transformer: AxisColor
+      Color Transformer: RGB8
       Decay Time: 0
       Enabled: true
       Invert Rainbow: false
