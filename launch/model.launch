@@ -2,7 +2,7 @@
   <!-- arguments for model, gui, rviz, and camera -->
   <arg name="model" default="$(find autonomous-scooter)/urdf/scooter.urdf.xacro"/>
   <arg name="gui" default="true" /> 
-  <arg name="rvizconfig" default="$(find autonomous-scooter)/rviz/rviz.rviz" />
+  <arg name="rvizconfig" default="$(find autonomous-scooter)/rviz/urdf.rviz" />
   <arg name="serial_no" default=""/>
   <arg name="json_file_path" default=""/>
   <arg name="camera" default="camera"/>
