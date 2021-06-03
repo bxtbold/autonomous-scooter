@@ -189,16 +189,15 @@ if __name__=="__main__":
             old_target = target_angular_vel
             
             
-            
 
     except:
         print(e)
 
-    """ finally:
+    finally:
         twist = Twist()
         twist.linear.x = 0.0; twist.linear.y = 0.0; twist.linear.z = 0.0
         twist.angular.x = 0.0; twist.angular.y = 0.0; twist.angular.z = 0.0
-        pub.publish(twist) """
+        pub.publish(twist)
 
     if os.name != 'nt':
         termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
