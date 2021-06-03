@@ -41,7 +41,7 @@ ROBOT_MAX_LIN_VEL = 30
 ROBOT_MAX_ANG_VEL = 48
 
 LIN_VEL_STEP_SIZE = 1
-ANG_VEL_STEP_SIZE = 6
+ANG_VEL_STEP_SIZE = 3
 
 old_target = 100
 angular = 0
@@ -168,39 +168,36 @@ if __name__=="__main__":
             
             twist = Twist()
 
-            """ control_linear_vel = makeSimpleProfile(control_linear_vel, target_linear_vel, (LIN_VEL_STEP_SIZE/2.0))
-            twist.linear.x = control_linear_vel; twist.linear.y = 0.0; twist.linear.z = 0.0
+            """ if old_target == target_angular_vel:
+                pass
+            elif old_target > target_angular_vel:
+                target_angular_vel -= 1
+            elif old_target < target_angular_vel:
+                target_angular_vel += 1 """
 
-            control_angular_vel = makeSimpleProfile(control_angular_vel, target_angular_vel, (ANG_VEL_STEP_SIZE/2.0))
-            twist.angular.x = 0.0; twist.angular.y = 0.0; twist.angular.z = control_angular_vel """
-
-            #start_time = time.time()
-            
-            #while time.time() - start_time > 0.5:
             twist.linear.x = target_linear_vel
             twist.linear.y = 0
             twist.linear.z = 0
             twist.angular.x = 0
             twist.angular.y = 0
-            if old_target == target_angular_vel:
-                target_angular_vel = 0
             twist.angular.z = target_angular_vel
+
+
             pub.publish(twist)
             
             
             old_target = target_angular_vel
             
             
-            
 
     except:
         print(e)
 
-    """ finally:
+    finally:
         twist = Twist()
         twist.linear.x = 0.0; twist.linear.y = 0.0; twist.linear.z = 0.0
         twist.angular.x = 0.0; twist.angular.y = 0.0; twist.angular.z = 0.0
-        pub.publish(twist) """
+        pub.publish(twist)
 
     if os.name != 'nt':
         termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
