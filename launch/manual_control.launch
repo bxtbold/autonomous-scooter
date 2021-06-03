@@ -1,9 +1,12 @@
 <launch>
 
-
-    <!-- running arduino node -->
-    <include file="$(find autonomous-scooter)/launch/arduino.launch"/>
-    <!-- running teleop -->
-    <include file="$(find autonomous-scooter)/launch/teleop_key.launch"/>
+  <!-- all vars that included.launch requires must be set -->
   
+
+    <!-- launching teleop -->
+    <include file="$(find autonomous-scooter)/launch/teleop_key.launch"/>
+    <!-- launching arduino -->
+    <include file="$(find autonomous-scooter)/launch/arduino.launch">
+        <arg name="port" value="/dev/ttyUSB0" />
+    </include>
 </launch>
