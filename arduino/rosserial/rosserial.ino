@@ -5,7 +5,7 @@
 #include <std_msgs/Float64.h>
 
 // pins 
-int steering_pin = 7;                   // steering on/off
+int steering_pin = 9;                   // steering on/off
 int dir_pin = 6;                        // Steering direction
 int EL=8;                              // EL - POWER
 //int SIGNAL=9;                          // Signal - Hall sensor
@@ -21,7 +21,7 @@ int VR=11;                              // VR - SPEED
 ros::NodeHandle nh;
 /* geometry_msgs::Twist twist; */
 
-
+double z_old = 100;
 
 void callback(const geometry_msgs::Twist& twist)
 //void callback(const std_msgs::Float64& twist)
@@ -32,12 +32,14 @@ void callback(const geometry_msgs::Twist& twist)
 
 
 
-  if(z<0){
-      Steering(HIGH, 100);
-    }
-  else if(z>0){
-      Steering(LOW, 100);
-    }
+  if(z_old - z < 0){
+        Steering(HIGH, 200);
+      }
+  else if(z_old - z > 0){
+      Steering(LOW, 200);}
+  z_old = z;
+ 
+
     
   
   if(x<0){
