@@ -1,4 +1,0 @@
-<!-- keyboard teleoperation node -->
-<launch>
-  <node pkg="autonomous-scooter" type="teleop.py" name="teleop_keyboard"  output="screen"/>
-</launch>
