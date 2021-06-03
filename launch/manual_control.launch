@@ -1,0 +1,9 @@
+<launch>
+
+
+    <!-- running arduino node -->
+    <include file="$(find autonomous-scooter)/launch/arduino.launch"/>
+    <!-- running teleop -->
+    <include file="$(find autonomous-scooter)/launch/teleop_key.launch"/>
+  
+</launch>
