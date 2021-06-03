@@ -38,6 +38,17 @@
             <axis xyz="0 0 1"/>
         </joint>
 
+        <transmission name="tran1">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="front_wheel_to_steering_joint">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="steering_motor">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+
 
     <!-- front wheel -->
     <link name="front_wheel_link">
@@ -66,6 +77,18 @@
             <origin xyz="0.0 0.0 -${steering_length/2}" rpy="0.0 0.0 0.0"/>
             <axis xyz="0 1 0"/>
         </joint>
+
+        <transmission name="tran2">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="base_to_front_joint">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="wheel_motor">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+
 
 
 
@@ -191,6 +214,7 @@
     <xacro:sensor_d435 parent="steering_link" use_nominal_extrinsics="false" add_plug="false" use_mesh="true">
         <origin xyz="0.03 0 0.1" rpy="0 0 0"/>
     </xacro:sensor_d435>    
-    <!-- <gazebo reference="scooter"/> -->
+
+
 
 </robot>

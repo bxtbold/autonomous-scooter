@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+
+<robot name="scooter" xmlns:xacro="https://www.ros.org/wiki/xacro">
+
+    <xacro:include filename="$(find scooter)/urdf/properties.xacro"/>
+    <xacro:include filename="$(find scooter)/urdf/scooter.gazebo" />
+
+    <!-- base_link -->    
+    <link name="base_link"/>
+
+    <!-- steering_link -->
+
+    <link name="steering_link">
+        <visual>
+            <geometry>
+                <cylinder radius="${thick_steering}" length="${steering_length}"/>
+            </geometry>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <material name='blue'/>
+        </visual>
+
+        <collision>
+            <geometry>
+                <cylinder radius="${thick_steering}" length="${steering_length}"/>
+            </geometry>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>           
+        </collision>
+
+        <mass value="${mass_steering_link}"/>
+        <inertia ixx="${steering_ixx}" ixy="${steering_ixy}" ixz="${steering_ixz}" iyy="${steering_iyy}" iyz="${steering_iyz}" izz="${steering_izz}"/>
+    </link>
+
+        <joint name="front_wheel_to_steering_joint" type="revolute">
+            <parent link="base_link"/>
+            <child link="steering_link"/>
+            <origin xyz="-${(steering_length/2 * cos(alpha))} 0.0 ${(steering_length/2 * sin(alpha)) + rad_front_wheel}" rpy="0.0 -${pi/2 - alpha} 0.0"/>
+            <limit lower="-${pi/4}" upper="${pi/4}" effort="0.0" velocity="0.0"/>
+            <axis xyz="0 0 1"/>
+        </joint>
+
+
+    <transmission name="tran1">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="steering_link">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="steering_motor">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+
+</robot>

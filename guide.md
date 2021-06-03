@@ -14,7 +14,9 @@
 - roscore
 - upload an arduino code to the arduino
 - rostopic list (to check if a desired topic exists)
-- rosrun rosserial_python serial_node.py /dev/ttyACM1
+- rosrun rosserial_python serial_node.py /dev/ttyACM* 
 
 
+## Realsense
 
+- roslaunch

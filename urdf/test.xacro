@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+
+<robot name="scooter" xmlns:xacro="https://www.ros.org/wiki/xacro">
+
+    <xacro:include filename="$(find autonomous-scooter)/urdf/properties.xacro"/>
+
+
+    <!-- base_link -->    
+    <link name="base_link"/>
+
+    <!-- steering_link -->
+
+    <link name="steering_link">
+        <visual>
+            <geometry>
+                <cylinder radius="${thick_steering}" length="${steering_length}"/>
+            </geometry>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <material name='blue'/>
+        </visual>
+
+        <collision>
+            <geometry>
+                <cylinder radius="${thick_steering}" length="${steering_length}"/>
+            </geometry>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>           
+        </collision>
+
+        <mass value="${mass_steering_link}"/>
+        <inertia ixx="${steering_ixx}" ixy="${steering_ixy}" ixz="${steering_ixz}" iyy="${steering_iyy}" iyz="${steering_iyz}" izz="${steering_izz}"/>
+    </link>
+
+        <joint name="front_wheel_to_steering_joint" type="revolute">
+            <parent link="base_link"/>
+            <child link="steering_link"/>
+            <origin xyz="-${(steering_length/2 * cos(alpha))} 0.0 ${(steering_length/2 * sin(alpha)) + rad_front_wheel}" rpy="0.0 -${pi/2 - alpha} 0.0"/>
+            <limit lower="-${pi/4}" upper="${pi/4}" effort="0.0" velocity="0.0"/>
+            <axis xyz="0 0 1"/>
+        </joint>
+
+        <transmission name="tran1">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="front_wheel_to_steering_joint">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="steering_motor">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+
+
+    <!-- front wheel -->
+    <link name="front_wheel_link">
+        <visual>
+            <geometry>
+                <cylinder length="${thick_wheel}" radius="${rad_front_wheel}"/>
+            </geometry>
+            <origin xyz="0.0 0.0 0.0" rpy="${pi/2} 0.0 0.0"/>
+            <material name='black'/>
+        </visual>
+        
+        <collision>
+            <geometry>
+                <cylinder length="${thick_wheel}" radius="${rad_front_wheel}"/>
+            </geometry>
+            <origin xyz="0.0 0.0 0.0" rpy="${pi/2} 0.0 0.0"/>           
+        </collision>
+
+        <mass value="${mass_front_wheel}"/>
+        <inertia ixx="${front_ixx}" ixy="${front_ixy}" ixz="${front_ixz}" iyy="${front_iyy}" iyz="${front_iyz}" izz="${front_izz}"/>
+    </link>
+
+        <joint name="base_to_front_joint" type="continuous">
+            <parent link="steering_link"/>
+            <child link="front_wheel_link"/>
+            <origin xyz="0.0 0.0 -${steering_length/2}" rpy="0.0 0.0 0.0"/>
+            <axis xyz="0 1 0"/>
+        </joint>
+
+        <transmission name="tran2">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="base_to_front_joint">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="wheel_motor">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+
+
+    <!-- depth camera -->
+    <xacro:include filename="$(find autonomous-scooter)/urdf/realsense_urdf/_d435.urdf.xacro" />
+    <xacro:sensor_d435 parent="steering_link" use_nominal_extrinsics="false" add_plug="false" use_mesh="true">
+        <origin xyz="0.03 0 0.1" rpy="0 0 0"/>
+    </xacro:sensor_d435>    
+    
+    
+
+
+</robot>
