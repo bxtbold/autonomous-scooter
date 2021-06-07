@@ -25,22 +25,13 @@ void callback(const geometry_msgs::Twist& twist)
   double x = twist.linear.x;
   double z = twist.angular.z;
 
-  if(z_old - z < 0){
-        Steering(HIGH, 150);
-      }
-  else if(z_old - z > 0){
-      Steering(LOW, 150);}
-  z_old = z;
+/*   if(z_old - z < 0) Steering(HIGH, 150);
+  else if(z_old - z > 0) Steering(LOW, 150);
+  z_old = z; */
   
-  if(x<0){
-    MoveBackward(-1*x);
-  }
-  else if(x>0){
-    MoveForward(x);
-  }
-  else if(x==0){
-    Brake();
-  }
+  if(x<0) MoveBackward(-1*x);
+  else if(x>0) MoveForward(x);
+  else if(x==0) Brake();
 }
 
 ros::Subscriber <geometry_msgs::Twist> sub("cmd_vel", callback);
@@ -51,16 +42,16 @@ void setup() {
 
   pinMode(steering_pin, OUTPUT);
   pinMode(dir_pin, OUTPUT);
-  pinMode(EL, OUTPUT);         
-  //pinMode(SIGNAL, INPUT);      
-  pinMode(ZF, OUTPUT);         
-  pinMode(VR, OUTPUT);   
+  pinMode(EL, OUTPUT);
+  //pinMode(SIGNAL, INPUT);
+  pinMode(ZF, OUTPUT);
+  pinMode(VR, OUTPUT);
 }
 
 void loop()
 {
   nh.spinOnce();
-  delay(1);
+  //delay(1);         // trying this by no delay time
 }
 
 void Steering(boolean dir, int duration){
@@ -83,13 +74,13 @@ void Brake(){
 }
 
 void MoveForward(double speed1){
-  analogWrite(VR, speed1);
   digitalWrite(ZF, HIGH);
+  analogWrite(VR, speed1);
   digitalWrite(EL, HIGH);
 }
 
 void MoveBackward(double speed1){
-  analogWrite(VR, speed1);
   digitalWrite(ZF, LOW);
+  analogWrite(VR, speed1);
   digitalWrite(EL, HIGH);
 }
