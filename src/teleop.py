@@ -30,6 +30,8 @@
 import rospy
 from geometry_msgs.msg import Twist
 from std_msgs.msg import Float64
+from sensor_msgs.msg import JointState
+from std_msgs.msg import Header
 import sys, select, os
 import time
 if os.name == 'nt':
@@ -38,13 +40,14 @@ else:
   import tty, termios
 
 ROBOT_MAX_LIN_VEL = 30
-ROBOT_MAX_ANG_VEL = 48
+ROBOT_MAX_ANG_VEL = 45
 
 LIN_VEL_STEP_SIZE = 1
 ANG_VEL_STEP_SIZE = 3
 
 old_target = 100
 angular = 0
+old_twist = None
 
 msg = """
 ---------------------------
@@ -120,8 +123,8 @@ if __name__=="__main__":
         settings = termios.tcgetattr(sys.stdin)
 
     rospy.init_node('ROBOT_teleop')
-    pub = rospy.Publisher('cmd_vel', Twist, queue_size=10)
-    #pub = rospy.Publisher('cmd_vel', Float64, queue_size=10)
+    pub1 = rospy.Publisher('cmd_vel', Twist, queue_size=10)
+    pub2 = rospy.Publisher('joint_states', JointState, queue_size=10)
 
     status = 0
     target_linear_vel   = 0.0
@@ -157,36 +160,33 @@ if __name__=="__main__":
                 target_linear_vel   = 0.0
                 control_linear_vel  = 0.0
                 print(vels(target_linear_vel,target_angular_vel))
+            elif key == 'y' :
+                target_angular_vel   = 0.0
+                print(vels(target_linear_vel,target_angular_vel))
                 
             else: 
                 if (key == '\x03'):
                     break
 
             
-
-
-            
             twist = Twist()
-
-            """ if old_target == target_angular_vel:
-                pass
-            elif old_target > target_angular_vel:
-                target_angular_vel -= 1
-            elif old_target < target_angular_vel:
-                target_angular_vel += 1 """
-
             twist.linear.x = target_linear_vel
             twist.linear.y = 0
             twist.linear.z = 0
             twist.angular.x = 0
             twist.angular.y = 0
             twist.angular.z = target_angular_vel
+            
+            joint_state = JointState()
+            joint_state.header = Header()
+            joint_state.header.stamp = rospy.Time.now()
+            joint_state.name = ['base_to_steering_joint', 'steering_to_front_joint', 'base_to_back_left_joint', 'base_to_back_right_joint']
+            joint_state.position = [target_angular_vel*3.142/180, 0, 0.0, 0.0]
 
 
-            pub.publish(twist)
-            
-            
-            old_target = target_angular_vel
+
+            pub1.publish(twist)
+            pub2.publish(joint_state)
             
             
 
@@ -197,7 +197,7 @@ if __name__=="__main__":
         twist = Twist()
         twist.linear.x = 0.0; twist.linear.y = 0.0; twist.linear.z = 0.0
         twist.angular.x = 0.0; twist.angular.y = 0.0; twist.angular.z = 0.0
-        pub.publish(twist)
+        pub1.publish(twist)
 
     if os.name != 'nt':
         termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
