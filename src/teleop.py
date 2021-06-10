@@ -184,7 +184,6 @@ if __name__=="__main__":
             joint_state.position = [target_angular_vel*3.142/180, 0, 0.0, 0.0]
 
 
-
             pub1.publish(twist)
             pub2.publish(joint_state)
             
