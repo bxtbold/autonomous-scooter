@@ -66,6 +66,15 @@
         </geometry>
       </visual>
     </link>
+      <joint name="left_wheel_hinge" type="revolute">
+          <pose>0 0 -0.03 0 0 0</pose>
+          <parent>chasis</parent>
+          <child>left_wheel</child>
+          <axis>
+            <xyz>0 1 0</xyz>
+          </axis>
+      </joint>
+
     <link name="right_wheel">
       <pose>0.1 -0.13 0.1 0 1.5707 1.5707</pose>
       <collision name="collsiton">
@@ -85,23 +94,24 @@
         </geometry>
       </visual>
     </link>
+      <joint name="right_wheel_hinge" type="revolute">
+        <pose>0 0 0.03 0 0 0</pose>
+        <parent>chasis</parent>
+        <child>right_wheel</child>
+        <axis>
+          <xyz>0 1 0</xyz>
+        </axis>
+      </joint>
 
-    <joint name="left_wheel_hinge" type="revolute">
-      <pose>0 0 -0.03 0 0 0</pose>
-      <parent>chasis</parent>
-      <child>left_wheel</child>
-      <axis>
-        <xyz>0 1 0</xyz>
-      </axis>
-    </joint>
+  
+    <include>
+      <uri>model://hokuyo</uri>
+      <pose>0.2 0.0 0.2 0 0 0</pose>
+    </include>
+      <joint name="hokuyo_joint" type="fixed">
+        <parent>chasis</parent>
+        <child>hokuyo::link</child>
+      </joint>
 
-    <joint name="right_wheel_hinge" type="revolute">
-      <pose>0 0 0.03 0 0 0</pose>
-      <parent>chasis</parent>
-      <child>right_wheel</child>
-      <axis>
-        <xyz>0 1 0</xyz>
-      </axis>
-    </joint>
   </model>
 </sdf>

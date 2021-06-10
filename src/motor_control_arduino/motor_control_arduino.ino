@@ -25,9 +25,9 @@ void callback(const geometry_msgs::Twist& twist)
   double x = twist.linear.x;
   double z = twist.angular.z;
 
-/*   if(z_old - z < 0) Steering(HIGH, 150);
+  if(z_old - z < 0) Steering(HIGH, 150);
   else if(z_old - z > 0) Steering(LOW, 150);
-  z_old = z; */
+  z_old = z;
   
   if(x<0) MoveBackward(-1*x);
   else if(x>0) MoveForward(x);
@@ -51,7 +51,7 @@ void setup() {
 void loop()
 {
   nh.spinOnce();
-  //delay(1);         // trying this by no delay time
+  delay(1);         // trying this by no delay time
 }
 
 void Steering(boolean dir, int duration){
@@ -60,14 +60,6 @@ void Steering(boolean dir, int duration){
   delay(duration);
   digitalWrite(steering_pin, LOW);       // steering_off
 }
-
-/* void plus() {
-  pos++; //count steps
-  Serial.println(pos);
-    if(pos>=steps){
-    Brake();
-    pos=0;}
-}*/
 
 void Brake(){
   digitalWrite(EL,LOW);

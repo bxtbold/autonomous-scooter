@@ -1,42 +1,88 @@
 <?xml version="1.0"?>
 
-<robot name="myfirstrobot" xmlns:xacro="http://ros.org/wiki/xacro">
+<robot name="scooter" xmlns:xacro="https://www.ros.org/wiki/xacro">
 
-  <xacro:arg name="use_nominal_extrinsics" default="false"/>
-  <xacro:arg name="add_plug" default="false" />
-  <xacro:arg name="use_mesh" default="true" />
-  <xacro:include filename="$(find realsense2_description)/urdf/_d435.urdf.xacro" />
-  
-  <link name="base_link" />
-  <xacro:sensor_d435 parent="base_link" use_nominal_extrinsics="$(arg use_nominal_extrinsics)" add_plug="1" use_mesh="$(arg use_mesh)">
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-  </xacro:sensor_d435>
+    <xacro:include filename="$(find autonomous-scooter)/urdf/properties.xacro"/>
 
 
-  <xacro:sensor_d435 name="realsense_d435" ropic_ns="realsense_d435" parent="base_link" publish_pointcloud="true">
-    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
-  </xacro:sensor_d435>
-  
+    <link name="base_link">
+        <visual>
+            <geometry>
+                <cylinder length="0.3" radius="0.01"/>
+            </geometry>
+            <origin xyz="0.0 0.0 0.0" rpy="${pi/2} 0.0 0.0"/>
+            <material name='black'/>
+        </visual>      
+        <collision>
+            <geometry>
+                <cylinder length="1" radius="0.1"/>
+            </geometry>
+            <origin xyz="0.0 0.0 0.0" rpy="${pi/2} 0.0 0.0"/>           
+        </collision>
+        <mass value="${mass_front_wheel}"/>
+        <inertia ixx="${front_ixx}" ixy="${front_ixy}" ixz="${front_ixz}" iyy="${front_iyy}" iyz="${front_iyz}" izz="${front_izz}"/>
+    </link>
+    <!-- front wheel -->
+    <link name="front_wheel_link">
+        <visual>
+            <geometry>
+                <cylinder length="${thick_wheel}" radius="${rad_front_wheel}"/>
+            </geometry>
+            <origin xyz="0.0 0.0 0.0" rpy="${pi/2} 0.0 0.0"/>
+            <material name='black'/>
+        </visual>      
+        <collision>
+            <geometry>
+                <cylinder length="${thick_wheel}" radius="${rad_front_wheel}"/>
+            </geometry>
+            <origin xyz="0.0 0.0 0.0" rpy="${pi/2} 0.0 0.0"/>           
+        </collision>
+        <mass value="${mass_front_wheel}"/>
+        <inertia ixx="${front_ixx}" ixy="${front_ixy}" ixz="${front_ixz}" iyy="${front_iyy}" iyz="${front_iyz}" izz="${front_izz}"/>
+    </link>
+
+        <joint name="front_wheel_to_base_joint" type="continuous">
+            <parent link="base_link"/>
+            <child link="front_wheel_link"/>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <axis xyz="0 1 0"/>
+            <limit effort="50" velocity="5.0"/>
+        </joint>
+    
+
+<!--         <joint name="steering_to_front_joint" type="continuous">
+            <parent link="base_link"/>
+            <child link="base_link"/>
+            <origin xyz="0.0 0.0 ${steering_length/2}" rpy="0.0 0.0 0.0"/>
+            <axis xyz="0 1 0"/>
+            <limit effort="50" velocity="5.0"/>
+        </joint>  -->
+
+        <transmission name="wheel_motor_transmission">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="front_wheel_to_base_joint">
+                <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="wheel_motor">
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+
+        <gazebo reference="front_wheel_link">
+            <mu1 value="200.0"/>
+            <mu2 value="100.0"/>
+            <kp value="10000000.0" />
+            <kd value="1.0" />>
+        </gazebo>
 
 
-<!--
-  <link name="left_back_wheel_link">
-    <visual>
-      <origin xyz="0 0.11 0"/>
-      <geometry>
-      <mesh filename="package://scooter/meshes/wheel.stl" scale="0.01 0.01 0.01"/> 
-        <box size="0.1 0.1 0.1"/>
-      </geometry>
-    </visual>
-  </link>
 
-  <joint name="base_to_left_back_wheel" type="fixed">
-  	<parent link="base_link"/>
-  	<child link="left_back_wheel_link"/>
-    <origin xyz="0 0.22 0"/>
-  </joint>
--->
+    <!-- Gazebo plugin for ROS Control -->
+    <gazebo>
+        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+        <robotNamespace>/</robotNamespace>
+        </plugin>
+    </gazebo>
+
 
 </robot>
-
-

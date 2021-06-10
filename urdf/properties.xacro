@@ -19,49 +19,51 @@
         <inertia
           ixx="1.0" ixy="0.0" ixz="0.0"
           iyy="1.0" iyz="0.0"
-          izz="1.0" />
+          izz="1.0 />
     </inertial> -->
+
     <!-- xacro properties -->
     <xacro:property name="thick_wheel" value="0.044" />
+
         <!-- frame_link -->
     <xacro:property name="scale" value="${0.01}" />
-    <xacro:property name="mass_frame_link" value="1.0" />
+    <xacro:property name="mass_frame_link" value="6.5" />
     <xacro:property name="front_ixx" value="1.0" />
-    <xacro:property name="front_ixy" value="0.1" />
-    <xacro:property name="front_ixz" value="0.1" />
-    <xacro:property name="front_iyy" value="0.1" />
-    <xacro:property name="front_iyz" value="0.1" />
-    <xacro:property name="front_izz" value="0.1" />
+    <xacro:property name="front_ixy" value="0.0" />
+    <xacro:property name="front_ixz" value="0.0" />
+    <xacro:property name="front_iyy" value="1.0" />
+    <xacro:property name="front_iyz" value="0.0" />
+    <xacro:property name="front_izz" value="1.0" />
         <!-- steering_link -->
     <xacro:property name="thick_steering" value="0.02" />
     <xacro:property name="alpha" value="${80 * pi / 180}" />
-    <xacro:property name="steering_length" value="${0.2}" />
-    <xacro:property name="mass_steering_link" value="${1.0}" />
+    <xacro:property name="steering_length" value="0.2" />
+    <xacro:property name="mass_steering_link" value="1.0" />
     <xacro:property name="steering_ixx" value="1.0" />
-    <xacro:property name="steering_ixy" value="0.1" />
-    <xacro:property name="steering_ixz" value="0.1" />
-    <xacro:property name="steering_iyy" value="0.1" />
-    <xacro:property name="steering_iyz" value="0.1" />
-    <xacro:property name="steering_izz" value="0.1" />
+    <xacro:property name="steering_ixy" value="0.0" />
+    <xacro:property name="steering_ixz" value="0.0" />
+    <xacro:property name="steering_iyy" value="1.0" />
+    <xacro:property name="steering_iyz" value="0.0" />
+    <xacro:property name="steering_izz" value="1.0" />
         <!-- front wheel  -->
     <xacro:property name="rad_front_wheel" value="${0.216/2}" />
-    <xacro:property name="mass_front_wheel" value="1.0" />
+    <xacro:property name="mass_front_wheel" value="3.0" />
     <xacro:property name="front_ixx" value="1.0" />
-    <xacro:property name="front_ixy" value="0.1" />
-    <xacro:property name="front_ixz" value="0.1" />
-    <xacro:property name="front_iyy" value="0.1" />
-    <xacro:property name="front_iyz" value="0.1" />
-    <xacro:property name="front_izz" value="0.1" />
+    <xacro:property name="front_ixy" value="0.0" />
+    <xacro:property name="front_ixz" value="0.0" />
+    <xacro:property name="front_iyy" value="1.0" />
+    <xacro:property name="front_iyz" value="0.0" />
+    <xacro:property name="front_izz" value="1.0" />
         <!-- back axis -->
     <xacro:property name="length_back_axis" value="0.3" />
     <xacro:property name="rad_back_wheel" value="${0.203/2}" />
         <!-- back wheel inertia -->
-    <xacro:property name="mass_back_wheel" value="1.0" />
+    <xacro:property name="mass_back_wheel" value="1.5" />
     <xacro:property name="back_ixx" value="1.0" />
-    <xacro:property name="back_ixy" value="0.1" />
-    <xacro:property name="back_ixz" value="0.1" />
-    <xacro:property name="back_iyy" value="0.1" />
-    <xacro:property name="back_iyz" value="0.1" />
-    <xacro:property name="back_izz" value="0.1" />
+    <xacro:property name="back_ixy" value="0.0" />
+    <xacro:property name="back_ixz" value="0.0" />
+    <xacro:property name="back_iyy" value="1.0" />
+    <xacro:property name="back_iyz" value="0.0" />
+    <xacro:property name="back_izz" value="1.0" />
 
 </robot>
