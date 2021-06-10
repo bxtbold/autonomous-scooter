@@ -1,8 +1,5 @@
 <launch>
   <!-- arguments for model, gui, rviz, and camera -->
-  <arg name="model" default="$(find autonomous-scooter)/urdf/scooter.urdf.xacro"/>
-  <arg name="gui" default="true" /> 
-  <arg name="rvizconfig" default="$(find autonomous-scooter)/rviz/urdf.rviz" />
   <arg name="serial_no" default=""/>
   <arg name="json_file_path" default=""/>
   <arg name="camera" default="camera"/>
@@ -30,14 +27,18 @@
     </include>
   </group>
 
+
+  <arg name="model" default="$(find autonomous-scooter)/urdf/scooter.urdf.xacro"/>
+  <arg name="gui" default="false" /> 
+  <arg name="rvizconfig" default="$(find autonomous-scooter)/rviz/urdf.rviz" />
   <!-- converts urdf to the robot description in the parameter server  -->
   <param name="robot_description" command="$(find xacro)/xacro $(arg model)" />
   
   <!-- publish the joints and launch rviz -->
   <!-- <param name="joint_state_publisher_gui" value="$(arg gui)"/> -->
   <param name="use_gui" value="$(arg gui)"/>
-  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+  <!-- <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" /> -->
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
-  <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="false" />
 
 </launch>
