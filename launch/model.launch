@@ -1,8 +1,10 @@
 <launch>
-  <!-- arguments for model, gui, rviz, and camera -->
+  <!-- launching scan and camera node -->
+  <include file="$(find autonomous-scooter)/launch/realsense/scan.launch"/>
+  <!-- arguments for model, gui, and rviz -->
   <arg name="model" default="$(find autonomous-scooter)/urdf/scooter.urdf.xacro"/>
   <arg name="gui" default="true" /> 
-  <arg name="rvizconfig" default="$(find autonomous-scooter)/rviz/urdf.rviz" />
+  <arg name="rvizconfig" default="$(find autonomous-scooter)/rviz/scan.rviz" />
   
   <!-- converts urdf to the robot description in the parameter server  -->
   <param name="robot_description" command="$(find xacro)/xacro $(arg model)" />

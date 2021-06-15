@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
     <arg name="port" default="/dev/ttyUSB0"/>
-    <node name="serial_node" pkg="rosserial_arduino" type="serial_node.py">
+    <node name="arduino" pkg="rosserial_arduino" type="serial_node.py">
         <param name="~port" value="$(arg port)"/>
         <param name="~baud" value="57600"/>
     </node>

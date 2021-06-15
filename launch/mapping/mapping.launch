@@ -1,0 +1,3 @@
+<launch>
+  <include file="$(find realsense2_camera)/launch/opensource_tracking.launch"/>
+</launch>

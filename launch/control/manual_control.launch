@@ -1,6 +1,6 @@
 <launch>
   <!-- launching teleop -->
-  <include file="$(find autonomous-scooter)/launch/teleop_key.launch"/>
+  <include file="$(find autonomous-scooter)/launch/control/teleop_key.launch"/>
   <!-- launching arduino -->
   <include file="$(find autonomous-scooter)/launch/arduino.launch">
       <arg name="port" value="/dev/ttyUSB0" />

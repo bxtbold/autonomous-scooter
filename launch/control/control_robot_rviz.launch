@@ -1,6 +1,6 @@
 <launch>
   <!-- launching teleop and arduino -->
-  <include file="$(find autonomous-scooter)/launch/manual_control.launch"/>
+  <include file="$(find autonomous-scooter)/launch/control/manual_control.launch"/>
   <!-- launching model in rviz -->
   <include file="$(find autonomous-scooter)/launch/model_rviz.launch"/>
 </launch>

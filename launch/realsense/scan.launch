@@ -1,0 +1,27 @@
+<launch>
+       <arg name="scan_topic" default="scan"/>
+       <arg name="camera"      default="camera"/>
+       <arg name="serial_no" default=""/>
+       <arg name="json_file_path" default=""/>
+       <arg name="manager"     value="nodelet_manager"/>
+       
+       <!-- launching a camera -->
+       <include file="$(find autonomous-scooter)/launch/realsense/camera.launch"/>
+  
+       <!-- Start depth image to laserscan conversion nodelet. -->
+
+       <node pkg="depthimage_to_laserscan" type="depthimage_to_laserscan" name="depthimage_to_laserscan" output="screen">
+              <!--input image-->
+              <remap from="image" to="/camera/depth/image_rect_raw"/>
+                     <!--The topic of outputting laser data-->
+              <remap from="scan" to="/scan" /> 
+                     <!--The number of pixel lines used to generate the laser scan. For each column, the scan will return the minimum value of those pixels vertically centered in the image. -->
+              <param name="scan_height" value="10"/>
+                     <!--Time between scans (seconds). Normally, 1.0/frame_rate. This value is not easily calculated from consecutive messages, so it is left to the user to set it correctly. -->
+              　　　　<param name="scan_time" value="0.03"/>
+                     <!--The minimum range returned (in meters). Outputs smaller than this range will be output as -Inf. -->
+              <param name="range_min" value="0.45"/>
+                     <!--The maximum range returned (in meters). Greater than this range will be output as +Inf. -->
+              <param name="range_max" value="8.00"/>
+       </node>
+</launch>

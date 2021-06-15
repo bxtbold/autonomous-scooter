@@ -25,8 +25,8 @@ void callback(const geometry_msgs::Twist& twist)
   double x = twist.linear.x;
   double z = twist.angular.z;
 
-  if(z_old - z < 0) Steering(HIGH, 150);
-  else if(z_old - z > 0) Steering(LOW, 150);
+  if(z_old - z < 0) Steering(HIGH, 100);
+  else if(z_old - z > 0) Steering(LOW, 100);
   z_old = z;
   
   if(x<0) MoveBackward(-1*x);
